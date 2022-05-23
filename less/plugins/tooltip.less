@@ -1,11 +1,11 @@
 @import "../variable";
 
 @tooltip_max-width: 500px;
-@tooltip_shadow: 0 1px 4px 0 fade(@shadow-color, 20%), 0 0 0 1px fade(@shadow-color, 0.5%);
+@tooltip_shadow: var(--tauchart-tooltip_shadow);
 
 .tau-chart {
     &__tooltip {
-        background: fade(@bg-color, 90%);
+        background: var(--tauchart-tooltip-bg-color);
         position: absolute;
         top: 0;
         left: 0;
@@ -66,7 +66,7 @@
             z-index: -1;
 
             &::after {
-                background: linear-gradient(to bottom, @bg-color 50%, fade(@bg-color, 0%));
+                background: linear-gradient(to bottom, @bg-color 50%, var(--tauchart-tooltip-bg-color-button-after));
                 content: "";
                 display: block;
                 height: 8px;
@@ -93,7 +93,7 @@
             }
 
             &:hover {
-                background: mix(@bg-color, @tooltip_btn-bg-color, 50%);
+                background: var(--tauchart-tooltip-bg-color-button);
                 color: @font-color;
             }
 
@@ -126,7 +126,7 @@
             }
 
             &::after {
-                background: linear-gradient(to top, @bg-color 50%, fade(@bg-color, 0%));
+                background: linear-gradient(to top, @bg-color 50%, var(--tauchart-tooltip-bg-color-button-after));
                 bottom: 100%;
                 top: initial;
             }

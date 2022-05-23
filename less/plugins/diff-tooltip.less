@@ -11,7 +11,7 @@
 .diff-tooltip {
 
     &__table {
-        border-top: 1px solid fade(@font-color, 20%);
+        border-top: var(--tauchart-diff-tooltip-border-top);
         margin-top: 5px;
         padding-top: 5px;
         width: ~"calc(100% + @{diff-tooltip_overflow})";
@@ -73,7 +73,7 @@
         &_overflow-top::before,
         &_overflow-bottom::after {
             align-items: center;
-            color: fade(@font-color, 70%);
+            color: var(--tauchart-diff-tooltip-overflow-bottom-after);
             content: "...";
             display: flex;
             flex-direction: column;
@@ -85,13 +85,13 @@
         }
 
         &_overflow-top::before {
-            background: linear-gradient(to bottom, @bg-color, fade(@bg-color, 0%));
+            background: linear-gradient(to bottom, @bg-color, var(--tauchart-tooltip-bg-color-button-after));
             justify-content: flex-start;
             top: 0;
         }
 
         &_overflow-bottom::after {
-            background: linear-gradient(to top, @bg-color, fade(@bg-color, 0%));
+            background: linear-gradient(to top, @bg-color, var(--tauchart-tooltip-bg-color-button-after));
             justify-content: flex-end;
             bottom: 0;
         }

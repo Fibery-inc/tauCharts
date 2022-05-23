@@ -33,7 +33,7 @@
             width: 100%;
 
             &:hover {
-                background-color: fade(@legend-items-bg-hover, 20%);
+                background-color: var(--tauchart-category-legend-items-bg-hover);
             }
 
             &_checked {
@@ -70,7 +70,7 @@
                         top: 6px;
                         width: 8px;
                     }
-                
+
                     &::after {
                         height: 8px;
                         left: 6px;
@@ -78,7 +78,7 @@
                         width: 2px;
                     }
                 }
-                
+
                 &:hover &__icon {
                     &::before,
                     &::after {

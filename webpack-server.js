@@ -7,8 +7,8 @@ const WATCHER_SERVER_LISTENING_PORT = process.env.WEBPACK_PORT || 8080;
 const compiler = webpack(conf);
 
 const server = new WebpackDevServer(compiler, {
-    quiet: false,
-    noInfo: false,
+    quiet: true,
+    noInfo: true,
     open: true,
     hot: true,
     historyApiFallback: false,

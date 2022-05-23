@@ -363,6 +363,15 @@
     };
 
     DevApp.prototype._initUI = function () {
+        const toggleTheme = document.getElementById('toggle-theme');
+        toggleTheme.addEventListener('click', () => {
+            let htmlClassList = document.body.parentElement.classList;
+            if(!htmlClassList.contains("tau-chart-dark")) {
+                htmlClassList.add("tau-chart-dark");
+            } else {
+                htmlClassList.remove("tau-chart-dark");
+            }
+        })
         var settings = this._settings;
 
         //
@@ -974,5 +983,4 @@
     DevApp.prototype.random.string = randomStringDeclaration;
     DevApp.prototype.random.date = randomDateDeclaration;
     DevApp.prototype.random.enum = randomEnumDeclaration;
-
 })();

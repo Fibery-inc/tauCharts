@@ -46,7 +46,7 @@
         }
 
         &__input:not(:disabled):focus + &__icon {
-            box-shadow: 0 0 0 1px fade(@shadow-color, 30%), 0 0 7px 0 @border-forms-focus-color;
+            box-shadow: var(--tauchart-box-shadow-input);
             outline: none;
         }
 
@@ -81,7 +81,7 @@
         color: @font-color;
 
         &:focus {
-            box-shadow: 0 0 0 1px fade(@shadow-color, 30%), 0 0 7px 0 @border-forms-focus-color;
+            box-shadow: var(--tauchart-box-shadow-input);
             outline: none;
         }
 

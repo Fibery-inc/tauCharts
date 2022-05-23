@@ -1,12 +1,12 @@
 @import "variable";
 
 .tau-chart__button {
-    background-color: fade(@bg-color, 90%);
+    background-color: var(--tauchart-button-bg-color);
     border: 1px solid currentColor;
     border-radius: 4px;
-    box-shadow: 0 0 1px fade(@shadow-color, 10%);
+    box-shadow: var(--tauchart-button-box-shadow);
     box-sizing: border-box;
-    color: mix(@font-color, @bg-color, 37.5%);
+    color: var(--tauchart-button-color);
     cursor: pointer;
     font-size: @font-size-m;
     padding: 0 6px;
@@ -14,7 +14,7 @@
     height: ~'calc(1.5em + 2px)';
 
     &:hover {
-        border-color: mix(@font-color, @bg-color, 50%);
+        border-color: var(--tauchart-button-border-color-hover);
         color: @font-color;
     }
 }

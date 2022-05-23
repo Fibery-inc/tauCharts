@@ -179,7 +179,14 @@
         /*-------------------------
             Content section
         -------------------------*/
-
+        :root {
+            --container-bg: white;
+            --container-color: black;
+        }
+        .tau-chart-dark:root {
+            --container-bg: black;
+            --container-color: white;
+        }
         main {
             display: flex;
             flex: 1;
@@ -204,6 +211,8 @@
             flex: 1;
             overflow-y: scroll;
             padding: 2em;
+            background: var(--container-bg);
+            color: var(--container-color);
         }
 
         .sample {
@@ -277,6 +286,9 @@
 
 <body>
     <div id="controls">
+        <div class="filter-section">
+            <button id="toggle-theme">Toggle theme</button>
+        </div>
         <div class="filter-section">
             <h2 class="filter-section__header">Filter by path</h2>
             <input id="inputPath" />
