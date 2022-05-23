@@ -25,7 +25,7 @@ module.exports = function (config) {
     },
 
     preprocessors: { "test/tests-main.js": ["webpack"] },
-    reporters: DEBUG ? ["spec"] : ["coverage-istanbul", "spec", "coveralls"],
+    reporters: DEBUG ? ["spec"] : ["coverage-istanbul", "spec"],
     coverageReporter: DEBUG
       ? null
       : {
