@@ -1,7 +1,7 @@
 {
-  "name": "taucharts",
-  "version": "2.8.0",
-  "homepage": "https://github.com/TargetProcess/taucharts",
+  "name": "@mavrin/taucharts",
+  "version": "3.0.0",
+  "homepage": "https://github.com/Mavrin/taucharts",
   "description": "Data-focused charting library based on D3",
   "author": {
     "name": "Targetprocess, Inc."
