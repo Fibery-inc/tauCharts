@@ -69,7 +69,7 @@ function getTestWebpackConfig(DEBUG) {
       alias: {
         "file-saver": "test/utils/saveAs.js",
         "print.style.css": "plugins/print.style.css",
-        taucharts: "src/tau.charts.ts",
+        "@fibery/taucharts": "src/tau.charts.ts",
         "tau-tooltip": "node_modules/tau-tooltip/tooltip.js",
       },
       extensions: [".js", ".json", ".ts"],
