@@ -1,4 +1,4 @@
-import Taucharts from "taucharts";
+import Taucharts from "@fibery/taucharts";
 import Tooltip, { TooltipSettings } from "./tooltip/tooltip-base";
 
 function TooltipPlugin(settings: TooltipSettings) {

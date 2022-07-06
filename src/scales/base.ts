@@ -113,7 +113,7 @@ export abstract class BaseScale implements ScaleFields {
   }
 
   isEmpty() {
-    return !Boolean(this._fields.dim);
+    return !this._fields.dim;
   }
 
   toBaseScale(func: (x, row) => any, dynamicProps = null) {

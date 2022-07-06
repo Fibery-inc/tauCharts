@@ -1,10 +1,10 @@
 import * as utils from "../utils/utils";
-import { ChartConfig, ChartDimensionsMap, UnitGuide, Unit } from "../definitions";
+import { ChartConfig, ChartDimensionsMap, UnitGuide, Unit, ScaleGuide } from "../definitions";
 
 interface XChartConfig extends ChartConfig {
-  colorGuide?: Object;
+  colorGuide?: ScaleGuide;
   obsoleteVerticalStackOrder?: boolean;
-  sizeGuide?: Object;
+  sizeGuide?: ScaleGuide;
 }
 
 interface ValidatedConfig {

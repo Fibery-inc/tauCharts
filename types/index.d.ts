@@ -26,7 +26,7 @@ interface ChartSpec {
     };
   };
   plugins?: PluginObject[];
-  data?: Object[];
+  data?: Record<string, unknown>[];
 }
 
 interface ChartGuide {
@@ -164,7 +164,7 @@ declare class Chart extends Plot {
   static winAware: Chart[];
 }
 
-type PluginObject = Object & {
+type PluginObject = Record<string, unknown> & {
   init?: (chart: Plot) => void;
   destroy?: () => void;
   onRender?: () => void;

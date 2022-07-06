@@ -1,5 +1,5 @@
 import { EventCallback, EventHandlerMap } from "./event";
-import { Plot } from "./charts/tau.plot";
+import { Plot as TauPlot } from "./charts/tau.plot";
 import { DataFrame } from "./data-frame";
 import { PeriodGenerator } from "./unit-domain-period-generator";
 import { Selection } from "d3-selection";
@@ -281,7 +281,7 @@ export interface ChartConfig {
   spec?: ChartSpec;
   settings?: ChartSettings;
   lineOrientation?: "none" | "horizontal" | "vertical" | "auto";
-  data?: Object[];
+  data?: Record<string, unknown>[];
   plugins?: PluginObject[];
   emptyContainer?: string;
   autoResize?: boolean;
@@ -437,7 +437,7 @@ export interface GPLSpec {
 }
 
 export interface SpecTransformer {
-  transform(chart?: Plot): GPLSpec;
+  transform(chart?: TauPlot): GPLSpec;
   isApplicable: boolean;
 }
 
@@ -445,16 +445,16 @@ export interface SpecTransformConstructor {
   new (spec: GPLSpec): SpecTransformer;
 }
 
-export type PluginObject = Object & {
-  init?(chart: Plot): void;
+export type PluginObject = Record<string, unknown> & {
+  init?(chart: TauPlot): void;
   destroy?(): void;
-  onRender?(chart: Plot, svg: SVGSVGElement): void;
-  onBeforeRender?(chart: Plot, svg: SVGSVGElement): void;
-  onSpecReady?(chart: Plot, spec: GPLSpec): void;
-  onUnitsStructureExpanded?(chart: Plot, spec: GPLSpec): void;
-  onRenderingTimeout?(chart: Plot, timeout: number): void;
-  onRenderingError?(chart: Plot, error: Error): void;
-  onUnitDraw?(chart: Plot, unit: GrammarElement): void;
+  onRender?(chart: TauPlot, svg: SVGSVGElement): void;
+  onBeforeRender?(chart: TauPlot, svg: SVGSVGElement): void;
+  onSpecReady?(chart: TauPlot, spec: GPLSpec): void;
+  onUnitsStructureExpanded?(chart: TauPlot, spec: GPLSpec): void;
+  onRenderingTimeout?(chart: TauPlot, timeout: number): void;
+  onRenderingError?(chart: TauPlot, error: Error): void;
+  onUnitDraw?(chart: TauPlot, unit: GrammarElement): void;
 };
 
 export interface PointerEventArgs {
@@ -463,4 +463,4 @@ export interface PointerEventArgs {
   event: MouseEvent;
 }
 
-export type Plot = Plot;
+export type Plot = TauPlot;

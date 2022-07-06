@@ -440,7 +440,7 @@ function annotations(xSettings: AnnotationSettings) {
         },
         guide: {
           animationSpeed: coordsUnit.guide.animationSpeed,
-          showAnchors: "never" as "never",
+          showAnchors: "never" as const,
           widthCssClass: "tau-chart__line-width-2",
           cssClass: "tau-chart__annotation-line",
           label: {

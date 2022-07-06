@@ -53,8 +53,8 @@ export function highlightAnchors(node: GrammarElement, model: any, filter: (row)
 interface ShapesAttrsDictionary {
   [shape: string]: {
     element: string;
-    getInitialAttrs: (node: GrammarElement, model: any) => Object;
-    getHighlightAttrs: (node: GrammarElement, model: any, filter: (row) => boolean | null) => Object;
+    getInitialAttrs: (node: GrammarElement, model: any) => Record<string, unknown>;
+    getHighlightAttrs: (node: GrammarElement, model: any, filter: (row) => boolean | null) => Record<string, unknown>;
   };
 }
 

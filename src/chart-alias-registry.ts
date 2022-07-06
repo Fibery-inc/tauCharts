@@ -14,7 +14,7 @@ var throwNotSupported = (alias: string) => {
   throw new Error(msg, errorCodes.NOT_SUPPORTED_TYPE_CHART);
 };
 
-type Config = Object;
+type Config = ChartConfig;
 
 var chartTypesRegistry = {
   validate(alias: string, config: Config) {

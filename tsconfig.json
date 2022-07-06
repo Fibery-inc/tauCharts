@@ -6,7 +6,7 @@
     "target": "es5",
     "baseUrl": ".",
     "paths": {
-      "taucharts": ["src/tau.charts"]
+      "@fibery/taucharts": ["src/tau.charts"]
     }
   },
   "include": ["plugins/**/*", "src/**/*", "test/**/*"],

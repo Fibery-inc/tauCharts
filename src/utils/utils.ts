@@ -694,6 +694,7 @@ export function createMultiSorter<T>(...sorters: ((a: T, b: T) => number)[]) {
 
 // TODO Remove this methods and its associated configs
 // which are just for templating in some plugins
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function pick(object: Object, ...props: string[]): Object {
   var result = {};
   if (object == null) {

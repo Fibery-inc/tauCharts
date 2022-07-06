@@ -24,10 +24,10 @@ module.exports = {
   resolve,
   externals: {
     ...externals,
-    taucharts: {
-      commonjs: "taucharts",
-      commonjs2: "taucharts",
-      amd: "taucharts",
+    "@fibery/taucharts": {
+      commonjs: "@fibery/taucharts",
+      commonjs2: "@fibery/taucharts",
+      amd: "@fibery/taucharts",
       root: "Taucharts",
     },
   },

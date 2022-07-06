@@ -255,7 +255,7 @@ export function selectAllImmediate(container: Element, selector: string) {
   var results = [];
   var matches =
     Element.prototype.matches || Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
-  for (var child = container.firstElementChild; Boolean(child); child = child.nextElementSibling) {
+  for (var child = container.firstElementChild; child; child = child.nextElementSibling) {
     if (matches.call(child, selector)) {
       results.push(child);
     }
