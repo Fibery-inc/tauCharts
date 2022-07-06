@@ -45,9 +45,7 @@ const plugins = [
 ];
 
 fs.readdirSync(resolvePath(`../less/plugins/`)).forEach((file) => {
-  pluginsEntry[file.replace(/(.+)(\.less)$/gi, "$1")] = resolvePath(
-    `../less/plugins/${file}`
-  );
+  pluginsEntry[file.replace(/(.+)(\.less)$/gi, "$1")] = resolvePath(`../less/plugins/${file}`);
 });
 
 const getEntries = (theme) => {
@@ -63,12 +61,8 @@ const tauchartsStyles = themes.map((theme) => ({
     path: resolvePath("../dist/"),
   },
   entry: {
-    [`taucharts${theme ? `.${theme}` : ""}`]: [
-      resolvePath(`../less/taucharts.less`),
-    ],
-    [`taucharts${theme ? `.${theme}` : ""}.min`]: [
-      resolvePath(`../full/taucharts.full.less`),
-    ],
+    [`taucharts${theme ? `.${theme}` : ""}`]: [resolvePath(`../less/taucharts.less`)],
+    [`taucharts${theme ? `.${theme}` : ""}.min`]: [resolvePath(`../full/taucharts.full.less`)],
   },
   devtool: "none",
   mode: `development`,
@@ -102,7 +96,4 @@ const tauchartsPluginsStyles = themes.map((theme) => ({
   plugins,
 }));
 
-module.exports = tauchartsStyles.concat(
-  tauchartsPluginsStyles,
-  tauchartsBrewerStyles
-);
+module.exports = tauchartsStyles.concat(tauchartsPluginsStyles, tauchartsBrewerStyles);

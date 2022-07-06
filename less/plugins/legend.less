@@ -1,207 +1,203 @@
 @import "../variable";
 
 .generateColors(@n; @i: 1) when (@i =< @n) {
+  .tau-chart__legend__item .color@{n}-@{i} {
+    background: extract(@category-colors, @i);
+    border: 1px solid extract(@category-colors, @i);
+  }
 
-    .tau-chart__legend__item .color@{n}-@{i} {
-        background: extract(@category-colors, @i);
-        border: 1px solid extract(@category-colors, @i);
-    }
+  .tau-chart__legend__item.disabled .color@{n}-@{i} {
+    background-color: transparent;
+  }
 
-    .tau-chart__legend__item.disabled .color@{n}-@{i} {
-        background-color: transparent;
-    }
-
-    .generateColors(@n; (@i + 1));
+  .generateColors(@n; (@i + 1));
 }
 
 .tau-chart {
+  &__legend {
+    padding: 20px 0 10px 10px;
+    position: relative;
+    margin-right: 30px;
+    width: 160px;
+    box-sizing: border-box;
 
-    &__legend {
-        padding: 20px 0 10px 10px;
-        position: relative;
-        margin-right: 30px;
-        width: 160px;
-        box-sizing: border-box;
+    &__wrap {
+      margin-bottom: 30px;
+      position: relative;
 
-        &__wrap {
-            margin-bottom: 30px;
-            position: relative;
-
-            &:last-child {
-                margin-bottom: 0;
-            }
-        }
-
-        &__title {
-            margin: 0 0 10px 10px;
-            text-transform: capitalize;
-            font-weight: 600;
-            font-size: @font-size-m;
-        }
-
-        &__reset {
-            margin-top: -4px;
-            position: absolute;
-            right: -25px;
-            top: 0;
-            z-index: 1;
-
-            &.disabled {
-                display: none;
-            }
-        }
-
-        &__reset + &__title {
-            margin-right: 1.7em;
-        }
-
-        &__item {
-            padding: 10px 20px 8px 40px;
-            position: relative;
-            font-size: @font-size-m;
-            line-height: 1.2em;
-            cursor: pointer;
-
-            &:hover {
-                background-color: var(--tauchart-category-legend-items-bg-hover);
-            }
-
-            &--size {
-                cursor: default;
-
-                &:hover {
-                    background: none;
-                }
-            }
-
-            .color-default {
-                background: @default-color;
-                border-color: @default-color;
-            }
-
-            &:disabled,
-            &.disabled {
-                color: @font-gray;
-            }
-
-        }
-
-        &__item.disabled &__guide {
-            background: transparent;
-        }
-
-        &__guide {
-            position: absolute;
-            box-sizing: border-box;
-            width: 100%;
-            height: 100%;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            border: 1px solid transparent;
-            border-radius: 50%;
-
-            &__wrap {
-                position: absolute;
-                top: ~'calc((10px - 8px) + 0.6em)'; // (padding-top - legend__guide height) + 0.5 of items line-height
-                left: 10px;
-                width: 16px;
-                height: 16px;
-            }
-
-            &--size {
-                stroke: @default-color;
-                fill: @default-color;
-
-            }
-
-            &--color {
-                &__overlay {
-                    background-color: transparent;
-                    height: 36px;
-                    left: -12px;
-                    position: absolute;
-                    top: -12px;
-                    width: 36px;
-                }
-
-                &::before {
-                    content: "";
-                    display: none;
-                    height: 2px;
-                    left: 3px;
-                    pointer-events: none;
-                    position: absolute;
-                    top: 6px;
-                    width: 8px;
-                }
-
-                &::after {
-                    content: "";
-                    display: none;
-                    height: 8px;
-                    left: 6px;
-                    pointer-events: none;
-                    position: absolute;
-                    top: 3px;
-                    width: 2px;
-                }
-            }
-        }
-
-        &__item &__guide--color:hover {
-            &::before,
-            &::after {
-                background-color: @bg-color;
-                display: inline-block;
-                transform: rotate(45deg);
-            }
-        }
-
-        &__item.disabled &__guide--color:hover {
-            background: @bg-color;
-
-            &::before,
-            &::after {
-                background-color: @font-color;
-                transform: none;
-            }
-        }
-
-        &__size-wrapper,
-        &__gradient-wrapper {
-            box-sizing: border-box;
-            margin: 10px;
-            overflow: visible;
-            width: 100%;
-        }
-
-        &__size,
-        &__gradient {
-            overflow: visible;
-        }
-
-        &__size {
-            &__item__circle {
-                &.color-definite {
-                    stroke: @color-definite;
-                    fill: @color-definite;
-                }
-
-                &.color-default-size {
-                    stroke: @default-color;
-                    fill: @default-color;
-                }
-            }
-        }
-
-        &__gradient {
-            &__bar {
-                rx: 4px;
-                ry: 4px;
-            }
-        }
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
+
+    &__title {
+      margin: 0 0 10px 10px;
+      text-transform: capitalize;
+      font-weight: 600;
+      font-size: @font-size-m;
+    }
+
+    &__reset {
+      margin-top: -4px;
+      position: absolute;
+      right: -25px;
+      top: 0;
+      z-index: 1;
+
+      &.disabled {
+        display: none;
+      }
+    }
+
+    &__reset + &__title {
+      margin-right: 1.7em;
+    }
+
+    &__item {
+      padding: 10px 20px 8px 40px;
+      position: relative;
+      font-size: @font-size-m;
+      line-height: 1.2em;
+      cursor: pointer;
+
+      &:hover {
+        background-color: var(--tauchart-category-legend-items-bg-hover);
+      }
+
+      &--size {
+        cursor: default;
+
+        &:hover {
+          background: none;
+        }
+      }
+
+      .color-default {
+        background: @default-color;
+        border-color: @default-color;
+      }
+
+      &:disabled,
+      &.disabled {
+        color: @font-gray;
+      }
+    }
+
+    &__item.disabled &__guide {
+      background: transparent;
+    }
+
+    &__guide {
+      position: absolute;
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      border: 1px solid transparent;
+      border-radius: 50%;
+
+      &__wrap {
+        position: absolute;
+        top: ~"calc((10px - 8px) + 0.6em)"; // (padding-top - legend__guide height) + 0.5 of items line-height
+        left: 10px;
+        width: 16px;
+        height: 16px;
+      }
+
+      &--size {
+        stroke: @default-color;
+        fill: @default-color;
+      }
+
+      &--color {
+        &__overlay {
+          background-color: transparent;
+          height: 36px;
+          left: -12px;
+          position: absolute;
+          top: -12px;
+          width: 36px;
+        }
+
+        &::before {
+          content: "";
+          display: none;
+          height: 2px;
+          left: 3px;
+          pointer-events: none;
+          position: absolute;
+          top: 6px;
+          width: 8px;
+        }
+
+        &::after {
+          content: "";
+          display: none;
+          height: 8px;
+          left: 6px;
+          pointer-events: none;
+          position: absolute;
+          top: 3px;
+          width: 2px;
+        }
+      }
+    }
+
+    &__item &__guide--color:hover {
+      &::before,
+      &::after {
+        background-color: @bg-color;
+        display: inline-block;
+        transform: rotate(45deg);
+      }
+    }
+
+    &__item.disabled &__guide--color:hover {
+      background: @bg-color;
+
+      &::before,
+      &::after {
+        background-color: @font-color;
+        transform: none;
+      }
+    }
+
+    &__size-wrapper,
+    &__gradient-wrapper {
+      box-sizing: border-box;
+      margin: 10px;
+      overflow: visible;
+      width: 100%;
+    }
+
+    &__size,
+    &__gradient {
+      overflow: visible;
+    }
+
+    &__size {
+      &__item__circle {
+        &.color-definite {
+          stroke: @color-definite;
+          fill: @color-definite;
+        }
+
+        &.color-default-size {
+          stroke: @default-color;
+          fill: @default-color;
+        }
+      }
+    }
+
+    &__gradient {
+      &__bar {
+        rx: 4px;
+        ry: 4px;
+      }
+    }
+  }
 }
 
 .generateColors(@list_category-colors);

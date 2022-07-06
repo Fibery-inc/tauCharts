@@ -1,24 +1,24 @@
 .flexbox() {
-    display: flex;
+  display: flex;
 }
 
 .flex-align(@params) {
-    align-items: @params;
+  align-items: @params;
 }
 
 .flex-direction-column() {
-    flex-direction: column;
+  flex-direction: column;
 }
 
 .flex(@flex-grow:0, @flex-shrink:1, @flex-basis:auto) {
-    flex: @flex-grow @flex-shrink @flex-basis;
+  flex: @flex-grow @flex-shrink @flex-basis;
 }
 
-.clearfix(){
-    &:after{
-        content: '';
-        height: 0;
-        display: block;
-        clear: both;
-    }
+.clearfix() {
+  &:after {
+    content: "";
+    height: 0;
+    display: block;
+    clear: both;
+  }
 }

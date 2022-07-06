@@ -24,10 +24,10 @@
 @light-dot-opacity: 0.7;
 @light-parallel-background-line-color: darken(@light-bg-color, 5%);
 // variables for plugins
-@light-legend-items-bg-hover: #BDC3CD;
-@light-export-items-bg-hover: #EAF2FC;
-@light-tooltip_btn-bg-color: #EBEEF1;
-@light-tooltip_btn-font-color: #65717F;
+@light-legend-items-bg-hover: #bdc3cd;
+@light-export-items-bg-hover: #eaf2fc;
+@light-tooltip_btn-bg-color: #ebeef1;
+@light-tooltip_btn-font-color: #65717f;
 
 @dark-bg-color: #000;
 @dark-font-color: #fff;
@@ -43,22 +43,22 @@
 @dark-checkbox-bg-color: @dark-forms-bg-color;
 @dark-checkbox-checked-icon: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAMAAAAolt3jAAAAPFBMVEX///////////////////////////////////////////////////////////////////////////////8gsV51AAAAE3RSTlMAHB0eHyAhIiNAv8Dc3d7f4eLjyWil2QAAAD1JREFUeAFjoApg5WZF4rEJCHNBxbmYGdgFhflZIFxuYV5OIWE+ZpguAWFhYV4mmDaQSh4mJHM4uBjJcAsAoZwBrNc0BKUAAAAASUVORK5CYII=);
 // map variables
-@dark-map-contour-stroke-color0: rgba(255, 255, 255, 0.20);
+@dark-map-contour-stroke-color0: rgba(255, 255, 255, 0.2);
 @dark-map-contour-stroke-color1: rgba(255, 255, 255, 0.15);
 @dark-map-contour-stroke-color2: rgba(255, 255, 255, 0.09);
 @dark-map-contour-stroke-color3: rgba(255, 255, 255, 0.06);
 @dark-map-contour-stroke-color4: rgba(255, 255, 255, 0.03);
-@dark-map-contour-stroke-color-highlighted: #FFBF00;
+@dark-map-contour-stroke-color-highlighted: #ffbf00;
 @dark-map-fill-color-highlighted: fade(@dark-map-contour-stroke-color-highlighted, 15%);
-@dark-map-text-color-highlighted: #FFBF00;
+@dark-map-text-color-highlighted: #ffbf00;
 //
 @dark-dot-opacity: 0.9;
 @dark-parallel-background-line-color: lighten(@dark-bg-color, 15%);
 // variables for plugins
 @dark-legend-items-bg-hover: #25272e;
-@dark-export-items-bg-hover: #EAF2FC;
+@dark-export-items-bg-hover: #eaf2fc;
 @dark-tooltip_btn-bg-color: #262a2e;
-@dark-tooltip_btn-font-color: #65717F;
+@dark-tooltip_btn-font-color: #65717f;
 
 .generate-theme(
   @base-bg-color,
@@ -94,34 +94,27 @@
   --tauchart-axis-color: @base-axis-color;
   --tauchart-parallel-background-line-color: @base-parallel-background-line-color;
   --tauchart-tooltip-bg-color: fade(@base-bg-color, 90%);
-  --tauchart-tooltip-bg-color-button: mix(@base-bg-color,
-  @base-tooltip_btn-bg-color,
-  50%);
+  --tauchart-tooltip-bg-color-button: mix(@base-bg-color, @base-tooltip_btn-bg-color, 50%);
   --tauchart-tooltip-bg-color-button-after: fade(@base-bg-color, 0%);
   --tauchart-crosshair-line-shadow: mix(@base-font-color, @base-bg-color, 25%);
   --tauchart-timeout-warning-bg-color: fadeout(@base-bg-color, 50%);
   --tauchart-button-bg-color: fade(@base-bg-color, 90%);
   --tauchart-button-color: mix(@base-font-color, @base-bg-color, 37.5%);
   --tauchart-button-box-shadow: 0 0 1px fade(@base-shadow-color, 10%);
-  --tauchart-button-border-color-hover: mix(@base-font-color,
-  @base-bg-color,
-  50%);
+  --tauchart-button-border-color-hover: mix(@base-font-color, @base-bg-color, 50%);
   --tauchart-cursor-line-stroke: mix(@base-font-color, @base-bg-color, 40%);
   --tauchart-shadow-color: @base-shadow-color;
   --tauchart-border-forms-color: @base-border-forms-color;
   --tauchart-border-forms-hover-color: @base-border-forms-hover-color;
   --tauchart-border-forms-focus-color: @base-border-forms-focus-color;
-  --tauchart-tooltip_shadow: 0 1px 4px 0 fade(@base-shadow-color, 20%),
-  0 0 0 1px fade(@base-shadow-color, 0.5%);
+  --tauchart-tooltip_shadow: 0 1px 4px 0 fade(@base-shadow-color, 20%), 0 0 0 1px fade(@base-shadow-color, 0.5%);
   --tauchart-box-shadow-input: 0 0 0 1px fade(@base-shadow-color, 30%),
-  0 0 7px 0 var(--tauchart-border-forms-focus-color);
+    0 0 7px 0 var(--tauchart-border-forms-focus-color);
   --tauchart-progress-value-background: fadeout(@base-font-color, 75%);
   --tauchart-diff-tooltip-border-top: 1px solid fade(@base-font-color, 20%);
   --tauchart-diff-tooltip-overflow-bottom-after: fade(@base-font-color, 70%);
   --tauchart-place-label-fill: fade(@base-font-color, 50%);
-  --tauchart-zero-tick-line-stroke: mix(@base-axis-color,
-  @base-font-color,
-  82.5%);
+  --tauchart-zero-tick-line-stroke: mix(@base-axis-color, @base-font-color, 82.5%);
   --tauchart-font-gray: @base-font-gray;
   --tauchart-font-dark: @base-font-dark;
   --tauchart-forms-bg-color: @base-forms-bg-color;
@@ -163,20 +156,18 @@
 
 @axis-color: var(--tauchart-axis-color);
 
-
 // map variables
 @map-contour-stroke-color0: var(--tauchart-map-contour-stroke-color0);
 @map-contour-stroke-color1: var(--tauchart-map-contour-stroke-color1);
 @map-contour-stroke-color2: var(--tauchart-map-contour-stroke-color2);
 @map-contour-stroke-color3: var(--tauchart-map-contour-stroke-color3);
-@map-contour-stroke-color4:var(--tauchart-map-contour-stroke-color4);
+@map-contour-stroke-color4:var (--tauchart-map-contour-stroke-color4);
 @map-contour-stroke-color-highlighted: var(--tauchart-map-contour-stroke-color-highlighted);
 @map-fill-color-highlighted: var(--tauchart-map-fill-color-highlighted);
 @map-text-color-highlighted: var(--tauchart-map-text-color-highlighted);
 
-@category-colors: #6fa1d9, #df2b59, #66da26, #4c3862, #e5b011, #3a3226, #cb461a,
-#c7ce23, #7fcdc2, #cca1c8, #c84cce, #54762e, #746bc9, #953441, #5c7a76,
-#c8bf87, #bfc1c3, #8e5c31, #71ce7b, #be478b;
+@category-colors: #6fa1d9, #df2b59, #66da26, #4c3862, #e5b011, #3a3226, #cb461a, #c7ce23, #7fcdc2, #cca1c8, #c84cce,
+  #54762e, #746bc9, #953441, #5c7a76, #c8bf87, #bfc1c3, #8e5c31, #71ce7b, #be478b;
 @default-color: extract(@category-colors, 1);
 @list_category-colors: length(@category-colors);
 @color-definite: #cacaca;

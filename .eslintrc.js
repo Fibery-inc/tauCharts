@@ -1,20 +1,17 @@
-module.exports =  {
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "ecmaVersion": 2018
+module.exports = {
+  parser: "@typescript-eslint/parser",
+  parserOptions: {
+    ecmaVersion: 2018,
   },
-  "plugins": ["@typescript-eslint"],
-  "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended"
-  ],
-  "env": {
-    "node": true,
-    "browser": true,
-    "mocha": true,
-    "es6": true
+  plugins: ["@typescript-eslint"],
+  extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  env: {
+    node: true,
+    browser: true,
+    mocha: true,
+    es6: true,
   },
-  "rules": {
+  rules: {
     "no-var": 0,
     "prefer-const": 0,
     "prefer-spread": 0,

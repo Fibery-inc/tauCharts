@@ -1,67 +1,57 @@
-import Taucharts from 'taucharts';
+import Taucharts from "@fibery/taucharts";
 
-    var utils = Taucharts.api.utils;
+var utils = Taucharts.api.utils;
 
-    function ChartSettings(xSettings) {
+function ChartSettings(xSettings) {
+  var pluginSettings = utils.defaults(xSettings || {}, {
+    show: true,
+    modes: ["normal", "entire-view", "fit-width", "fit-height", "minimal"],
+  });
 
-        var pluginSettings = utils.defaults(
-            xSettings || {},
-            {
-                show: true,
-                modes: [
-                    'normal',
-                    'entire-view',
-                    'fit-width',
-                    'fit-height',
-                    'minimal'
-                ]
-            });
+  return {
+    init: function (chart) {
+      if (pluginSettings.show) {
+        pluginSettings.selectedMode = chart.getSpec().settings.fitModel;
 
-        return {
+        var panel = chart.insertToHeader(
+          this.template({
+            modes: pluginSettings.modes.map(function (x) {
+              var selected = pluginSettings.selectedMode === x ? "selected" : "";
+              return "<option " + selected + ' value="' + x + '">' + x + "</option>";
+            }),
+          })
+        );
 
-            init: function (chart) {
+        panel.addEventListener(
+          "change",
+          function (e) {
+            var target = e.target;
+            if (target.classList.contains("i-role-fit-model")) {
+              pluginSettings.selectedMode = target.value;
+              chart.getSpec().settings.fitModel = pluginSettings.selectedMode;
+              chart.refresh();
+            }
+          },
+          false
+        );
+      }
+    },
 
-                if (pluginSettings.show) {
+    template: utils.template(
+      [
+        '<div class="tau-chart__chartsettingspanel">',
+        "    <div>",
+        "        <span>View Mode:&nbsp;</span>",
+        '        <select class="i-role-fit-model tau-chart__select">',
+        "        <%= modes %> />",
+        "        </select>",
+        "    </div>",
+        "</div>",
+      ].join("")
+    ),
+  };
+}
 
-                    pluginSettings.selectedMode = chart.getSpec().settings.fitModel;
-
-                    var panel = chart.insertToHeader(this.template(
-                        {
-                            modes: pluginSettings.modes.map(function (x) {
-                                var selected = (pluginSettings.selectedMode === x) ? 'selected' : '';
-                                return '<option ' + selected + ' value="' + x + '">' + x + '</option>';
-                            })
-                        }
-                    ));
-
-                    panel.addEventListener(
-                        'change',
-                        function (e) {
-                            var target = e.target;
-                            if (target.classList.contains('i-role-fit-model')) {
-                                pluginSettings.selectedMode = target.value;
-                                chart.getSpec().settings.fitModel = pluginSettings.selectedMode;
-                                chart.refresh();
-                            }
-                        },
-                        false);
-                }
-            },
-
-            template: utils.template(
-                [
-                    '<div class="tau-chart__chartsettingspanel">',
-                    '    <div>',
-                    '        <span>View Mode:&nbsp;</span>',
-                    '        <select class="i-role-fit-model tau-chart__select">',
-                    '        <%= modes %> />',
-                    '        </select>',
-                    '    </div>',
-                    '</div>'
-                ].join(''))
-        };
-    }
-
-    Taucharts.api.plugins.add('settings', ChartSettings);
+Taucharts.api.plugins.add("settings", ChartSettings);
 
 export default ChartSettings;

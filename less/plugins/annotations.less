@@ -1,14 +1,13 @@
 @import "../variable";
 
 .tau-chart {
+  &__annotation-line {
+    stroke-width: 2px;
+    stroke-dasharray: 1, 1;
+    shape-rendering: crispEdges;
+  }
 
-    &__annotation-line {
-        stroke-width: 2px;
-        stroke-dasharray: 1,1;
-        shape-rendering: crispEdges;
-    }
-
-    &__annotation-area&__area polygon {
-        opacity: 0.1;
-    }
+  &__annotation-area&__area polygon {
+    opacity: 0.1;
+  }
 }

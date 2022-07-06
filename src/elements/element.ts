@@ -1,137 +1,128 @@
-import {Emitter} from '../event';
-import * as utils from '../utils/utils';
-import * as d3Selection from 'd3-selection';
-const d3 = {...d3Selection};
-import {
-    global_Element,
-    GrammarElement,
-    GrammarModel,
-    ScaleFunction,
-    ScreenModel,
-    Unit
-} from '../definitions';
+import { Emitter } from "../event";
+import * as utils from "../utils/utils";
+import * as d3Selection from "d3-selection";
+const d3 = { ...d3Selection };
+import { global_Element, GrammarElement, GrammarModel, ScaleFunction, ScreenModel, Unit } from "../definitions";
 
-import {DataFrame} from '../data-frame';
+import { DataFrame } from "../data-frame";
 
 export abstract class Element extends Emitter implements GrammarElement {
+  abstract init(config: Unit);
 
-    abstract init(config: Unit);
+  config: Unit;
+  screenModel: GrammarModel;
+  _elementNameSpace: string;
+  _elementScalesHub: { [scale: string]: ScaleFunction };
 
-    config: Unit;
-    screenModel: GrammarModel;
-    _elementNameSpace: string;
-    _elementScalesHub: {[scale: string]: ScaleFunction};
+  // add base behaviour here
+  constructor(config: Unit) {
+    super();
+    this.screenModel = null;
+    this._elementNameSpace = config.namespace || "default";
+    this._elementScalesHub = {};
+  }
 
-    // add base behaviour here
-    constructor(config: Unit) {
-        super();
-        this.screenModel = null;
-        this._elementNameSpace = (config.namespace || 'default');
-        this._elementScalesHub = {};
-    }
+  regScale(paramId: string, scaleObj: ScaleFunction) {
+    this._elementScalesHub[paramId] = scaleObj;
+    return this;
+  }
 
-    regScale(paramId: string, scaleObj: ScaleFunction) {
-        this._elementScalesHub[paramId] = scaleObj;
-        return this;
-    }
+  getScale(paramId: string) {
+    return this._elementScalesHub[paramId] || null;
+  }
 
-    getScale(paramId: string) {
-        return this._elementScalesHub[paramId] || null;
-    }
+  fireNameSpaceEvent(eventName: string, eventData: any) {
+    var namespace = this._elementNameSpace;
+    this.fire(`${eventName}.${namespace}`, eventData);
+  }
 
-    fireNameSpaceEvent(eventName: string, eventData: any) {
-        var namespace = this._elementNameSpace;
-        this.fire(`${eventName}.${namespace}`, eventData);
-    }
+  subscribe(sel: GrammarElement, dataInterceptor = (x: any) => x, eventInterceptor = (x: Event) => x) {
+    var self = this;
+    var last = {};
+    (
+      [
+        {
+          event: "mouseover",
+          limit: 0,
+        },
+        {
+          event: "mouseout",
+          limit: 0,
+        },
+        {
+          event: "click",
+          limit: 0,
+        },
+        {
+          event: "mousemove",
+          limit: "requestAnimationFrame",
+        },
+      ] as { event: string; limit: "requestAnimationFrame" | number }[]
+    ).forEach((item) => {
+      var eventName = item.event;
+      var limit = item.limit;
 
-    subscribe(sel: GrammarElement, dataInterceptor = ((x: any) => x), eventInterceptor = ((x: Event) => x)) {
-        var self = this;
-        var last = {};
-        ([
-            {
-                event: 'mouseover',
-                limit: 0
-            },
-            {
-                event: 'mouseout',
-                limit: 0
-            },
-            {
-                event: 'click',
-                limit: 0
-            },
-            {
-                event: 'mousemove',
-                limit: 'requestAnimationFrame'
-            }
-        ] as {event: string; limit: 'requestAnimationFrame' | number}[]).forEach((item) => {
-            var eventName = item.event;
-            var limit = item.limit;
-
-            var callback = function (d) {
-                var eventData = {
-                    data: dataInterceptor.call(this, d),
-                    event: eventInterceptor.call(this, d3Selection.event, d)
-                };
-                self.fire(eventName, eventData);
-                self.fireNameSpaceEvent(eventName, eventData);
-            };
-
-            sel.on(eventName, utils.throttleLastEvent(last, eventName, callback, limit));
-        });
-    }
-
-    allocateRect() {
-        return {
-            left: 0,
-            top: 0,
-            width: 0,
-            height: 0
+      var callback = function (d) {
+        var eventData = {
+          data: dataInterceptor.call(this, d),
+          event: eventInterceptor.call(this, d3Selection.event, d),
         };
-    }
+        self.fire(eventName, eventData);
+        self.fireNameSpaceEvent(eventName, eventData);
+      };
 
-    /* eslint-disable */
-    defineGrammarModel(fnCreateScale) {
-        return {};
-    }
+      sel.on(eventName, utils.throttleLastEvent(last, eventName, callback, limit));
+    });
+  }
 
-    getGrammarRules() {
-        return [];
-    }
+  allocateRect() {
+    return {
+      left: 0,
+      top: 0,
+      width: 0,
+      height: 0,
+    };
+  }
 
-    getAdjustScalesRules() {
-        return [];
-    }
+  /* eslint-disable */
+  defineGrammarModel(fnCreateScale) {
+    return {};
+  }
 
-    createScreenModel(grammarModel) {
-        return null;
-    }
+  getGrammarRules() {
+    return [];
+  }
 
-    getClosestElement(x, y) {
-        return null;
-    }
-    /* eslint-enable */
+  getAdjustScalesRules() {
+    return [];
+  }
 
-    addInteraction() {
-        // do nothing
-    }
+  createScreenModel(grammarModel) {
+    return null;
+  }
 
-    abstract drawFrames(frames: DataFrame[]);
+  getClosestElement(x, y) {
+    return null;
+  }
+  /* eslint-enable */
 
-    draw() {
-        // TODO: expose to explicit call everywhere
-        this.config.options.container = this.config.options.slot(this.config.uid);
-        this.drawFrames(this.config.frames);
-    }
+  addInteraction() {
+    // do nothing
+  }
 
-    data() {
-        return this
-            .config
-            .frames
-            .reduce(((data, frame) => data.concat(frame.part())), []);
-    }
+  abstract drawFrames(frames: DataFrame[]);
 
-    node() {
-        return this;
-    }
+  draw() {
+    // TODO: expose to explicit call everywhere
+    this.config.options.container = this.config.options.slot(this.config.uid);
+    this.drawFrames(this.config.frames);
+  }
+
+  data() {
+    return this.config.frames.reduce((data, frame) => data.concat(frame.part()), []);
+  }
+
+  node() {
+    return this;
+  }
 }

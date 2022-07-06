@@ -1,99 +1,108 @@
-import * as utils from './utils/utils';
-import {UnitDomainPeriodGenerator} from './unit-domain-period-generator';
-import {UnitGuide} from './definitions';
+import * as utils from "./utils/utils";
+import { UnitDomainPeriodGenerator } from "./unit-domain-period-generator";
+import { UnitGuide } from "./definitions";
 
 type FrameAlgebraFunction = (dataFn: () => any[], ...args: any[]) => any[];
 
-var unify = ((v) => utils.isDate(v) ? v.getTime() : v);
+var unify = (v) => (utils.isDate(v) ? v.getTime() : v);
 
-var FramesAlgebra: {[algebra: string]: FrameAlgebraFunction} = {
+var FramesAlgebra: { [algebra: string]: FrameAlgebraFunction } = {
+  cross(dataFn: () => any[], dimX: string, dimY: string): any[] {
+    var data = dataFn();
 
-    cross(dataFn: () => any[], dimX: string, dimY: string): any[] {
+    var domainX = utils.unique(
+      data.map((x) => x[dimX]),
+      unify
+    );
+    var domainY = utils.unique(
+      data.map((x) => x[dimY]),
+      unify
+    );
 
-        var data = dataFn();
+    var domX = domainX.length === 0 ? [null] : domainX;
+    var domY = domainY.length === 0 ? [null] : domainY;
 
-        var domainX = utils.unique(data.map(x => x[dimX]), unify);
-        var domainY = utils.unique(data.map(x => x[dimY]), unify);
+    return domY.reduce((memo, rowVal) => {
+      return memo.concat(
+        domX.map((colVal) => {
+          var r = {};
 
-        var domX = domainX.length === 0 ? [null] : domainX;
-        var domY = domainY.length === 0 ? [null] : domainY;
+          if (dimX) {
+            r[dimX] = unify(colVal);
+          }
 
-        return domY.reduce(
-            (memo, rowVal) => {
+          if (dimY) {
+            r[dimY] = unify(rowVal);
+          }
 
-                return memo.concat(domX.map((colVal) => {
+          return r;
+        })
+      );
+    }, []);
+  },
 
-                    var r = {};
+  cross_period(
+    dataFn: () => any[],
+    dimX: string,
+    dimY: string,
+    xPeriod: string,
+    yPeriod: string,
+    guide: UnitGuide
+  ): any[] {
+    var data = dataFn();
+    var utc = guide ? guide.utcTime : false;
 
-                    if (dimX) {
-                        r[dimX] = unify(colVal);
-                    }
+    var domainX = utils.unique(
+      data.map((x) => x[dimX]),
+      unify
+    );
+    var domainY = utils.unique(
+      data.map((x) => x[dimY]),
+      unify
+    );
 
-                    if (dimY) {
-                        r[dimY] = unify(rowVal);
-                    }
+    var domX = domainX.length === 0 ? [null] : domainX;
+    var domY = domainY.length === 0 ? [null] : domainY;
 
-                    return r;
-                }));
-            },
-            []);
-    },
-
-    cross_period(
-        dataFn: () => any[],
-        dimX: string,
-        dimY: string,
-        xPeriod: string,
-        yPeriod: string,
-        guide: UnitGuide
-    ): any[] {
-        var data = dataFn();
-        var utc = (guide ? guide.utcTime : false);
-
-        var domainX = utils.unique(data.map(x => x[dimX]), unify);
-        var domainY = utils.unique(data.map(x => x[dimY]), unify);
-
-        var domX = domainX.length === 0 ? [null] : domainX;
-        var domY = domainY.length === 0 ? [null] : domainY;
-
-        if (xPeriod) {
-            domX = UnitDomainPeriodGenerator.generate(Math.min(...domainX), Math.max(...domainX), xPeriod, {utc});
-        }
-
-        if (yPeriod) {
-            domY = UnitDomainPeriodGenerator.generate(Math.min(...domainY), Math.max(...domainY), yPeriod, {utc});
-        }
-
-        return domY.reduce(
-            (memo, rowVal) => {
-
-                return memo.concat(domX.map((colVal) => {
-
-                    var r = {};
-
-                    if (dimX) {
-                        r[dimX] = unify(colVal);
-                    }
-
-                    if (dimY) {
-                        r[dimY] = unify(rowVal);
-                    }
-
-                    return r;
-                }));
-            },
-            []);
-    },
-
-    groupBy(dataFn: () => any[], dim: string) {
-        var data = dataFn();
-        var domainX = utils.unique(data.map(x => x[dim]), unify);
-        return domainX.map((x)=>({[dim]: unify(x)}));
-    },
-
-    none() {
-        return [null];
+    if (xPeriod) {
+      domX = UnitDomainPeriodGenerator.generate(Math.min(...domainX), Math.max(...domainX), xPeriod, { utc });
     }
+
+    if (yPeriod) {
+      domY = UnitDomainPeriodGenerator.generate(Math.min(...domainY), Math.max(...domainY), yPeriod, { utc });
+    }
+
+    return domY.reduce((memo, rowVal) => {
+      return memo.concat(
+        domX.map((colVal) => {
+          var r = {};
+
+          if (dimX) {
+            r[dimX] = unify(colVal);
+          }
+
+          if (dimY) {
+            r[dimY] = unify(rowVal);
+          }
+
+          return r;
+        })
+      );
+    }, []);
+  },
+
+  groupBy(dataFn: () => any[], dim: string) {
+    var data = dataFn();
+    var domainX = utils.unique(
+      data.map((x) => x[dim]),
+      unify
+    );
+    return domainX.map((x) => ({ [dim]: unify(x) }));
+  },
+
+  none() {
+    return [null];
+  },
 };
 
-export {FramesAlgebra};
+export { FramesAlgebra };

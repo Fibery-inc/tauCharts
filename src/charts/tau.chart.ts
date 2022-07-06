@@ -1,68 +1,66 @@
-import {Plot} from './tau.plot';
-import * as utils from '../utils/utils';
-import {chartTypesRegistry} from '../chart-alias-registry';
-import {ChartConfig} from '../definitions';
+import { Plot } from "./tau.plot";
+import * as utils from "../utils/utils";
+import { chartTypesRegistry } from "../chart-alias-registry";
+import { ChartConfig } from "../definitions";
 
 class Chart extends Plot {
+  constructor(config: ChartConfig) {
+    super(config);
 
-    constructor(config: ChartConfig) {
+    if (config.autoResize) {
+      Chart.winAware.push(this);
+    }
+  }
 
-        super(config);
+  applyConfig(config: ChartConfig) {
+    var errors = chartTypesRegistry.validate(config.type, config);
 
-        if (config.autoResize) {
-            Chart.winAware.push(this);
-        }
+    if (errors.length > 0) {
+      throw new Error(errors[0]);
     }
 
-    applyConfig(config: ChartConfig) {
-        var errors = chartTypesRegistry.validate(config.type, config);
+    var chartFactory = chartTypesRegistry.get(config.type);
 
-        if (errors.length > 0) {
-            throw new Error(errors[0]);
-        }
+    config = utils.defaults(config, { autoResize: true });
+    config.settings = Plot.setupSettings(config.settings);
+    config.dimensions = Plot.setupMetaInfo(config.dimensions, config.data);
 
-        var chartFactory = chartTypesRegistry.get(config.type);
+    super.applyConfig(chartFactory(config));
+  }
 
-        config = utils.defaults(config, {autoResize: true});
-        config.settings = Plot.setupSettings(config.settings);
-        config.dimensions = Plot.setupMetaInfo(config.dimensions, config.data);
-
-        super.applyConfig(chartFactory(config));
+  destroy() {
+    var index = Chart.winAware.indexOf(this);
+    if (index !== -1) {
+      Chart.winAware.splice(index, 1);
     }
+    super.destroy();
+  }
 
-    destroy() {
-        var index = Chart.winAware.indexOf(this);
-        if (index !== -1) {
-            Chart.winAware.splice(index, 1);
-        }
-        super.destroy();
-    }
-
-    static winAware: Chart[];
-    static resizeOnWindowEvent: () => void;
+  static winAware: Chart[];
+  static resizeOnWindowEvent: () => void;
 }
 
 Chart.winAware = [];
 
 Chart.resizeOnWindowEvent = (function () {
-    let rIndex;
+  let rIndex;
 
-    function requestReposition() {
-        if (rIndex || !Chart.winAware.length) {
-            return;
-        }
-        rIndex = window.requestAnimationFrame(resize);
+  function requestReposition() {
+    if (rIndex || !Chart.winAware.length) {
+      return;
     }
+    rIndex = window.requestAnimationFrame(resize);
+  }
 
-    function resize() {
-        rIndex = 0;
-        for (let i = 0, l = Chart.winAware.length; i < l; i++) {
-            Chart.winAware[i].resize();
-        }
+  function resize() {
+    rIndex = 0;
+    for (let i = 0, l = Chart.winAware.length; i < l; i++) {
+      Chart.winAware[i].resize();
     }
+  }
 
-    return requestReposition;
-}());
-window.addEventListener('resize', Chart.resizeOnWindowEvent);
+  return requestReposition;
+})();
+window.addEventListener("resize", Chart.resizeOnWindowEvent);
 
-export {Chart};
+export { Chart };

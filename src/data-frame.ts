@@ -1,46 +1,38 @@
-import * as utils from './utils/utils';
-import {DataFilter, DataFrameObject, DataKey, DataTransformations, Unit} from './definitions';
+import * as utils from "./utils/utils";
+import { DataFilter, DataFrameObject, DataKey, DataTransformations, Unit } from "./definitions";
 
 export class DataFrame implements DataFrameObject {
+  constructor({ key, pipe, source, units }: DataFrameObject, dataSource, transformations: DataTransformations = {}) {
+    this.key = key;
+    this.pipe = pipe || [];
+    this.source = source;
+    this.units = units;
 
-    constructor({key, pipe, source, units}: DataFrameObject, dataSource, transformations: DataTransformations = {}) {
+    this._frame = { key, source, pipe: this.pipe };
+    this._data = dataSource;
+    this._pipeReducer = (data, pipeCfg) => transformations[pipeCfg.type](data, pipeCfg.args);
+  }
 
-        this.key = key;
-        this.pipe = pipe || [];
-        this.source = source;
-        this.units = units;
+  hash() {
+    var x = [this._frame.pipe, this._frame.key, this._frame.source].map((x) => JSON.stringify(x)).join("");
 
-        this._frame = {key, source, pipe: this.pipe};
-        this._data = dataSource;
-        this._pipeReducer = (data, pipeCfg) => transformations[pipeCfg.type](data, pipeCfg.args);
-    }
+    return utils.generateHash(x);
+  }
 
-    hash() {
-        var x = [this._frame.pipe, this._frame.key, this._frame.source]
-            .map((x) => JSON.stringify(x))
-            .join('');
+  full() {
+    return this._data;
+  }
 
-        return utils.generateHash(x);
-    }
+  part(pipeMapper = (x: DataFilter) => x) {
+    return this._frame.pipe.map(pipeMapper).reduce(this._pipeReducer, this._data);
+  }
 
-    full() {
-        return this._data;
-    }
+  key: DataKey;
+  pipe: DataFilter[];
+  source: string;
+  units: Unit[];
 
-    part(pipeMapper = ((x: DataFilter) => x)) {
-        return this
-            ._frame
-            .pipe
-            .map(pipeMapper)
-            .reduce(this._pipeReducer, this._data);
-    }
-
-    key: DataKey;
-    pipe: DataFilter[];
-    source: string;
-    units: Unit[];
-
-    _frame: DataFrameObject;
-    _data: any[];
-    _pipeReducer: (data: any[], pipeCfg: DataFilter) => any[];
+  _frame: DataFrameObject;
+  _data: any[];
+  _pipeReducer: (data: any[], pipeCfg: DataFilter) => any[];
 }

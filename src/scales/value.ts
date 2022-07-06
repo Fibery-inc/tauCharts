@@ -1,20 +1,15 @@
-import {BaseScale} from './base';
-import {DataFrame} from '../data-frame';
-import {
-    ScaleConfig
-} from '../definitions';
+import { BaseScale } from "./base";
+import { DataFrame } from "../data-frame";
+import { ScaleConfig } from "../definitions";
 
 export class ValueScale extends BaseScale {
+  constructor(xSource: DataFrame, scaleConfig: ScaleConfig) {
+    super(xSource, scaleConfig);
 
-    constructor(xSource: DataFrame, scaleConfig: ScaleConfig) {
+    this.addField("scaleType", "value").addField("georole", scaleConfig.georole);
+  }
 
-        super(xSource, scaleConfig);
-
-        this.addField('scaleType', 'value')
-            .addField('georole', scaleConfig.georole);
-    }
-
-    create() {
-        return this.toBaseScale(((x) => x));
-    }
+  create() {
+    return this.toBaseScale((x) => x);
+  }
 }

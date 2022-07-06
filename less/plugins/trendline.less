@@ -2,61 +2,54 @@
 
 //Generate colors for trendlines
 .generateTrendlineColors(@n; @i: 1) when (@i =< @n) {
+  .tau-chart__svg .tau-chart__trendline.color@{n}-@{i} {
+    stroke: darken(extract(@category-colors, @i), 15%);
+  }
 
-    .tau-chart__svg  .tau-chart__trendline.color@{n}-@{i} {
-        stroke: darken(extract(@category-colors, @i), 15%);
-    }
-
-    .generateTrendlineColors(@n; (@i + 1));
+  .generateTrendlineColors(@n; (@i + 1));
 }
 
 .generateTrendlineColors(@list_category-colors);
 .tau-chart__svg {
-    .tau-chart__trendline.color-default {
-        stroke: darken(@default-color, 15%);
-    }
+  .tau-chart__trendline.color-default {
+    stroke: darken(@default-color, 15%);
+  }
 }
-
 
 .tau-chart {
+  &__trendlinepanel {
+    padding: 20px 0 20px 20px;
+    margin-right: 20px;
+    width: 160px;
+    box-sizing: border-box;
 
-    &__trendlinepanel {
-        padding: 20px 0 20px 20px;
-        margin-right: 20px;
-        width: 160px;
-        box-sizing: border-box;
-
-        &__title {
-            margin: 0 0 10px 0;
-            text-transform: capitalize;
-            font-weight: 600;
-            font-size: @font-size-m;
-        }
-
-        &__control {
-            width: 100%;
-        }
-
-        &__error-message {
-            font-size: @font-size-xs;
-            line-height: 16px;
-            margin-left: 5px;
-        }
+    &__title {
+      margin: 0 0 10px 0;
+      text-transform: capitalize;
+      font-weight: 600;
+      font-size: @font-size-m;
     }
 
-    &__trendlinepanel.applicable-false.hide-trendline-error,
-    &__trendlinepanel.applicable-false &__checkbox__input,
-    &__trendlinepanel.applicable-false &__trendlinepanel__control,
-    &__trendlinepanel.applicable-false &__checkbox__icon {
-        display: none;
+    &__control {
+      width: 100%;
     }
 
-    /* TrendLine */
-    &__trendline {
-        stroke-dasharray: 4, 4;
+    &__error-message {
+      font-size: @font-size-xs;
+      line-height: 16px;
+      margin-left: 5px;
     }
+  }
+
+  &__trendlinepanel.applicable-false.hide-trendline-error,
+  &__trendlinepanel.applicable-false &__checkbox__input,
+  &__trendlinepanel.applicable-false &__trendlinepanel__control,
+  &__trendlinepanel.applicable-false &__checkbox__icon {
+    display: none;
+  }
+
+  /* TrendLine */
+  &__trendline {
+    stroke-dasharray: 4, 4;
+  }
 }
-
-
-
-

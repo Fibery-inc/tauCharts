@@ -1,18 +1,25 @@
 ## 2.8.0 (feb 26, 2020)
+
 - add possibility to use functions in tickFormat
 
 ## 2.7.4 (jul 17, 2019)
+
 - fix blinking and shaking of axis labels during re-renders of chart [#580](https://github.com/TargetProcess/tauCharts/pull/580)
+
 ## 2.7.3 (may 31, 2019)
+
 - preserve padding values during auto layout, even if user has hidden x or y guide ([@rDr4g0n](https://github.com/rDr4g0n) in [#575](https://github.com/TargetProcess/tauCharts/pull/575))
+
 ## 2.7.2 (april 22, 2019)
+
 - fix performance for measure dates on very old dates [#573](https://github.com/TargetProcess/tauCharts/pull/573)
 
 ## 2.7.1 (march 14, 2019)
+
 - return support IE11
 
-
 ## 2.7.0 (march 8, 2019)
+
 - improve tooltip plugin. Add onExclude event.
 - update dependencies
 
@@ -40,7 +47,7 @@
 
 - add support d3 v5
 - now user can set rotate guide params for x dimensions both with auto layout spec [#550](https://github.com/TargetProcess/tauCharts/pull/550)
-- add event type for onSelect legend plugin settings  [#550](https://github.com/TargetProcess/tauCharts/pull/550)
+- add event type for onSelect legend plugin settings [#550](https://github.com/TargetProcess/tauCharts/pull/550)
 
 ## 2.5.1 (august 19, 2018)
 
@@ -81,15 +88,11 @@
 
 - order for dates in Color legend when scale is periodic [#528](https://github.com/TargetProcess/tauCharts/pull/528)
 
-
 ## 2.2.1 (may 4, 2018)
 
 ### changed
 
 - multiline label improvements [#526](https://github.com/TargetProcess/tauCharts/pull/526)
-
-
-
 
 ## 2.2.0 (april 26, 2018)
 
@@ -99,6 +102,7 @@
 - Multiline labels support (using lineBreak and lineBreakSeparator flags for label guide [#525](https://github.com/TargetProcess/tauCharts/pull/525)
 
 ### fixed
+
 - default TypeScript export definition to conform to version 2.6.0 rules
   ([@tyronedougherty](https://github.com/tyronedougherty) in [#520](https://github.com/TargetProcess/tauCharts/pull/520))
 
@@ -108,7 +112,6 @@
 
 - place Y facets labels at top-left under facet cell
 - place Y axis label at top, X axis label at right
-
 
 ## 2.0.3 (march 11, 2018)
 

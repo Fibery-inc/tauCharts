@@ -1,148 +1,138 @@
-import Taucharts from 'taucharts';
+import Taucharts from "@fibery/taucharts";
 
-    var utils = Taucharts.api.utils;
+var utils = Taucharts.api.utils;
 
-    function ChartParallelTooltip(xSettings) {
+function ChartParallelTooltip(xSettings) {
+  var settings = utils.defaults(xSettings || {}, {
+    // add default settings here
+  });
 
-        var settings = utils.defaults(
-            xSettings || {},
-            {
-                // add default settings here
-            });
+  var plugin = {
+    init: function (chart) {
+      this._cursor = null;
+      this._chart = chart;
+      this._tooltip = chart.addBalloon({
+        spacing: 3,
+        auto: true,
+        effectClass: "fade",
+      });
 
-        var plugin = {
+      this._tooltip.content(this.template);
 
-            init: function (chart) {
+      this._tooltip.getElement().addEventListener(
+        "click",
+        function (e) {
+          var target = e.target;
 
-                this._cursor = null;
-                this._chart = chart;
-                this._tooltip = chart.addBalloon(
-                    {
-                        spacing: 3,
-                        auto: true,
-                        effectClass: 'fade'
-                    });
+          while (target !== e.currentTarget && target !== null) {
+            if (target.classList.contains("i-role-exclude")) {
+              self._exclude();
+            }
+            target = target.parentNode;
+          }
 
-                this._tooltip
-                    .content(this.template);
+          self._tooltip.hide();
+        },
+        false
+      );
 
-                this._tooltip
-                    .getElement()
-                    .addEventListener('click', function (e) {
+      var self = this;
+      var timeoutHide;
+      this.showTooltip = function (e) {
+        clearTimeout(timeoutHide);
 
-                        var target = e.target;
+        self._cursor = e.data;
 
-                        while (target !== e.currentTarget && target !== null) {
-                            if (target.classList.contains('i-role-exclude')) {
-                                self._exclude();
-                            }
-                            target = target.parentNode;
-                        }
+        var content = self._tooltip.getElement().querySelectorAll(".i-role-content");
+        if (content[0]) {
+          content[0].innerHTML = Object.keys(e.data)
+            .map(function (k) {
+              return self.itemTemplate({ label: k, value: e.data[k] });
+            })
+            .join("");
+        }
 
-                        self._tooltip.hide();
+        self._tooltip.show(e.event.pageX, e.event.pageY).updateSize();
+      };
 
-                    }, false);
+      this.hideTooltip = function (e) {
+        timeoutHide = setTimeout(function () {
+          self._tooltip.hide();
+        }, 1000);
+      };
 
-                var self = this;
-                var timeoutHide;
-                this.showTooltip = function (e) {
+      this._tooltip.getElement().addEventListener(
+        "mouseover",
+        function (e) {
+          clearTimeout(timeoutHide);
+        },
+        false
+      );
 
-                    clearTimeout(timeoutHide);
+      this._tooltip.getElement().addEventListener(
+        "mouseleave",
+        function (e) {
+          self._tooltip.hide();
+        },
+        false
+      );
+    },
 
-                    self._cursor = e.data;
+    _exclude: function () {
+      this._chart.addFilter({
+        tag: "exclude",
+        predicate: (function (element) {
+          return function (row) {
+            return JSON.stringify(row) !== JSON.stringify(element);
+          };
+        })(this._cursor),
+      });
+      this._chart.refresh();
+    },
 
-                    var content = self._tooltip.getElement().querySelectorAll('.i-role-content');
-                    if (content[0]) {
-                        content[0].innerHTML = Object
-                            .keys(e.data)
-                            .map(function (k) {
-                                return self.itemTemplate({label: k, value: e.data[k]});
-                            })
-                            .join('');
-                    }
+    onRender: function (chart) {
+      var self = this;
 
-                    self._tooltip
-                        .show(e.event.pageX, e.event.pageY)
-                        .updateSize();
-                };
+      chart
+        .select(function (node) {
+          return node.config.type === "PARALLEL/ELEMENT.LINE";
+        })
+        .forEach(function (node) {
+          node.on("mouseout", function (sender, e) {
+            self.hideTooltip(e);
+          });
 
-                this.hideTooltip = function (e) {
-                    timeoutHide = setTimeout(
-                        function () {
-                            self._tooltip.hide();
-                        },
-                        1000);
-                };
+          node.on("mouseover", function (sender, e) {
+            self.showTooltip(e);
+          });
+        });
+    },
 
-                this._tooltip
-                    .getElement()
-                    .addEventListener('mouseover', function (e) {
-                        clearTimeout(timeoutHide);
-                    }, false);
+    template: [
+      '<div class="tau-chart__tooltip__buttons tau-chart__tooltip__clickable">',
+      '<div class="tau-chart__tooltip__button i-role-exclude">',
+      '<div class="tau-chart__tooltip__button__wrap">',
+      '<span class="tau-icon-close-gray"></span>',
+      "Exclude",
+      "</div>",
+      "</div>",
+      "</div>",
+      '<div class="i-role-content tau-chart__tooltip__content"></div>',
+    ].join(""),
 
-                this._tooltip
-                    .getElement()
-                    .addEventListener('mouseleave', function (e) {
-                        self._tooltip.hide();
-                    }, false);
-            },
+    itemTemplate: utils.template(
+      [
+        '<div class="tau-chart__tooltip__list__item">',
+        '<div class="tau-chart__tooltip__list__elem"><%=label%></div>',
+        '<div class="tau-chart__tooltip__list__elem"><%=value%></div>',
+        "</div>",
+      ].join("")
+    ),
+  };
 
-            _exclude: function () {
-                this._chart
-                    .addFilter({
-                        tag: 'exclude',
-                        predicate: (function (element) {
-                            return function (row) {
-                                return JSON.stringify(row) !== JSON.stringify(element);
-                            };
-                        }(this._cursor))
-                    });
-                this._chart.refresh();
-            },
+  return plugin;
+}
 
-            onRender: function (chart) {
-
-                var self = this;
-
-                chart
-                    .select(function (node) {
-                        return node.config.type === 'PARALLEL/ELEMENT.LINE';
-                    })
-                    .forEach(function (node) {
-
-                        node.on('mouseout', function (sender, e) {
-                            self.hideTooltip(e);
-                        });
-
-                        node.on('mouseover', function (sender, e) {
-                            self.showTooltip(e);
-                        });
-                    });
-            },
-
-            template: [
-                '<div class="tau-chart__tooltip__buttons tau-chart__tooltip__clickable">',
-                '<div class="tau-chart__tooltip__button i-role-exclude">',
-                '<div class="tau-chart__tooltip__button__wrap">',
-                '<span class="tau-icon-close-gray"></span>',
-                'Exclude',
-                '</div>',
-                '</div>',
-                '</div>',
-                '<div class="i-role-content tau-chart__tooltip__content"></div>'
-            ].join(''),
-
-            itemTemplate: utils.template([
-                '<div class="tau-chart__tooltip__list__item">',
-                '<div class="tau-chart__tooltip__list__elem"><%=label%></div>',
-                '<div class="tau-chart__tooltip__list__elem"><%=value%></div>',
-                '</div>'
-            ].join(''))
-        };
-
-        return plugin;
-    }
-
-    Taucharts.api.plugins.add('parallel-tooltip', ChartParallelTooltip);
+Taucharts.api.plugins.add("parallel-tooltip", ChartParallelTooltip);
 
 export default ChartParallelTooltip;

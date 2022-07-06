@@ -1,8 +1,8 @@
 .tau-chart__tooltip.fade {
-    opacity: 0;
-    transition: none !important;
+  opacity: 0;
+  transition: none !important;
 }
 .tau-chart__tooltip.fade.in {
-    opacity: 1;
-    transition-duration: 0s;
+  opacity: 1;
+  transition-duration: 0s;
 }

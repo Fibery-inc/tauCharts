@@ -1,5 +1,6 @@
 {
-  "name": "@mavrin/taucharts",
+  "name": "@fibery/taucharts",
+  "private": false,
   "version": "3.0.0",
   "homepage": "https://github.com/Mavrin/taucharts",
   "description": "Data-focused charting library based on D3",
@@ -52,7 +53,6 @@
     "test": "npm run build && karma start",
     "lint": "eslint --quiet .",
     "devtest": "npm run build:dev && karma start --taucharts-debug",
-    "prepublishOnly": "npm run build",
     "publishToReleaseBranch": "node tasks/publishToReleaseBranch.js"
   },
   "devDependencies": {

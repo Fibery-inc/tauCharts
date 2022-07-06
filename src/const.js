@@ -1,1 +1,1 @@
-export const CSS_PREFIX = 'tau-chart__';
+export const CSS_PREFIX = "tau-chart__";

@@ -2,113 +2,112 @@
 @import "mixins";
 
 .tau-chart {
+  &__chart {
+    font-family: @fontFamily;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+  }
 
-    &__chart {
-        font-family: @fontFamily;
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        overflow: auto;
+  &__layout {
+    .flexbox;
+    .flex-align(@params:stretch);
+    .flex-direction-column;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    background: @layout-bg-color;
+    color: @font-color;
+
+    &__header {
+      .flex(@flex-shrink:0.1);
+      position: relative;
     }
 
-    &__layout {
-        .flexbox;
-        .flex-align(@params:stretch);
-        .flex-direction-column;
-        height: 100%;
-        width: 100%;
-        overflow: auto;
-        background: @layout-bg-color;
-        color: @font-color;
-
-        &__header {
-            .flex(@flex-shrink:0.1);
-            position: relative;
-        }
-
-        &__container {
-            .flexbox;
-            .flex(@flex-grow: 1);
-            height: 100%;
-        }
-
-        &__footer {
-            .flex;
-        }
-
-        &__sidebar {
-            .flex;
-        }
-
-        &__content {
-            .flex(@flex-grow: 1;@flex-shrink: 1);
-            // TODO: Switch to `overflow:auto` after Chrome bug fixed:
-            // https://bugs.chromium.org/p/chromium/issues/detail?id=644450
-            // overflow: auto;
-            overflow: hidden;
-        }
-
-        &__sidebar-right {
-            position: relative;
-            // overflow: auto;
-            overflow: hidden;
-            .flex(@flex-shrink:0);
-
-            &__wrap {
-                max-height: 100%;
-                box-sizing: border-box;
-            }
-        }
-
-        text{
-            fill: @font-color;
-        }
-
-        &&_rendering-error {
-            opacity: 0.75;
-        }
+    &__container {
+      .flexbox;
+      .flex(@flex-grow: 1);
+      height: 100%;
     }
 
-    &__rendering-timeout-warning {
-        align-items: center;
-        background: var(--tauchart-timeout-warning-bg-color);
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        width: 100%;
-
-        svg {
-            height: 100%;
-            max-width: 32em;
-            width: 100%;
-        }
-
-        text {
-            font-weight: 300;
-        }
+    &__footer {
+      .flex;
     }
 
-    &__progress {
+    &__sidebar {
+      .flex;
+    }
+
+    &__content {
+      .flex(@flex-grow: 1;@flex-shrink: 1);
+      // TODO: Switch to `overflow:auto` after Chrome bug fixed:
+      // https://bugs.chromium.org/p/chromium/issues/detail?id=644450
+      // overflow: auto;
+      overflow: hidden;
+    }
+
+    &__sidebar-right {
+      position: relative;
+      // overflow: auto;
+      overflow: hidden;
+      .flex(@flex-shrink:0);
+
+      &__wrap {
+        max-height: 100%;
         box-sizing: border-box;
-        height: 0.25em;
-        opacity: 0;
-        overflow: hidden;
-        pointer-events: none;
-        position: absolute;
-        top: 0;
-        transition: opacity 1s 0.75s;
-        width: 100%;
-
-        &_active {
-            opacity: 1;
-        }
-
-        &__value {
-            background: var(--tauchart-progress-value-background);
-            height: 100%;
-            transition: width 0.75s;
-        }
+      }
     }
+
+    text {
+      fill: @font-color;
+    }
+
+    &&_rendering-error {
+      opacity: 0.75;
+    }
+  }
+
+  &__rendering-timeout-warning {
+    align-items: center;
+    background: var(--tauchart-timeout-warning-bg-color);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    width: 100%;
+
+    svg {
+      height: 100%;
+      max-width: 32em;
+      width: 100%;
+    }
+
+    text {
+      font-weight: 300;
+    }
+  }
+
+  &__progress {
+    box-sizing: border-box;
+    height: 0.25em;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    transition: opacity 1s 0.75s;
+    width: 100%;
+
+    &_active {
+      opacity: 1;
+    }
+
+    &__value {
+      background: var(--tauchart-progress-value-background);
+      height: 100%;
+      transition: width 0.75s;
+    }
+  }
 }

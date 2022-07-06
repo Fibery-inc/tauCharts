@@ -22,14 +22,14 @@ const chart = new Taucharts.Chart({
 ```
 
 - Simple chart config is auto-transformed into a more complex specification,
-containing information about detected dimensions' types
-and hierarchical structure of elements *(though it can be specified manually)*.
-- Then GPL config is created *(Graphics Programming Language)*.
-It contains information about data sources and scales configurations.
+  containing information about detected dimensions' types
+  and hierarchical structure of elements _(though it can be specified manually)_.
+- Then GPL config is created _(Graphics Programming Language)_.
+  It contains information about data sources and scales configurations.
 - Plugins are initialized.
-Each plugin can add content into chart layout,
-subscribe to chart events and modify the configuration at different steps of processing,
-register new Grammar Elements etc.
+  Each plugin can add content into chart layout,
+  subscribe to chart events and modify the configuration at different steps of processing,
+  register new Grammar Elements etc.
 - Same steps are run after calling `chart.updateConfig( config )`.
 
 ```
@@ -125,42 +125,42 @@ register new Grammar Elements etc.
 ### Let's render the chart
 
 ```js
-chart.renderTo( domElement );
+chart.renderTo(domElement);
 ```
 
 - Chart layout is inserted into DOM element.
-Chart size is determined by container's size *(if not specified)*.
+  Chart size is determined by container's size _(if not specified)_.
 - Live Spec (detailed GPL config) is created from GPL config by using Spec Transformers.
-Default transformers are **ApplyRatio**
-(removes empty values from facets and resizes facets proportionally)
-and **AutoLayout**
-(configures layout parameters depending on chart size).
+  Default transformers are **ApplyRatio**
+  (removes empty values from facets and resizes facets proportionally)
+  and **AutoLayout**
+  (configures layout parameters depending on chart size).
 - Units structure gets unfolded, data is passed from parents to their children
-and processed by applying expressions (filters etc.).
+  and processed by applying expressions (filters etc.).
 - Another Spec Transformers are applied:
-**ExtractAxes** removes repeated X and Y axes from facets,
-**CalcSize** calculates required chart size and hides ticks or labels
-when there is not enough space.
-There are some strategies for calculating required size and optimizing a chart,
-the most common are
-`normal` (default one,
-displays scrollbars when optimal chart size is too large to prevent large density
-of facets, categorical ticks, bars etc.)
-and `entire-view`
-(fits the whole chart into specified size without displaying scrollbars).
+  **ExtractAxes** removes repeated X and Y axes from facets,
+  **CalcSize** calculates required chart size and hides ticks or labels
+  when there is not enough space.
+  There are some strategies for calculating required size and optimizing a chart,
+  the most common are
+  `normal` (default one,
+  displays scrollbars when optimal chart size is too large to prevent large density
+  of facets, categorical ticks, bars etc.)
+  and `entire-view`
+  (fits the whole chart into specified size without displaying scrollbars).
 - Task Runner is initialized. It runs tasks asynchronously by small synchronous chunks
-to prevent browser from freeze.
+  to prevent browser from freeze.
 - Tasks for creating draw scenario are scheduled.
-Grammar Elements are created, their screen models
-(mapping from data row to coordinates, colors etc.) are initialized
-and modified by Grammar Rules, that are toggled by guides.
+  Grammar Elements are created, their screen models
+  (mapping from data row to coordinates, colors etc.) are initialized
+  and modified by Grammar Rules, that are toggled by guides.
 - Tasks for rendering DOM nodes are scheduled.
-The `draw` method of each Grammar Element is called
-and chart DOM nodes are created or updated one by one.
+  The `draw` method of each Grammar Element is called
+  and chart DOM nodes are created or updated one by one.
 - Task runner executes scheduled tasks.
 - Same steps are repeated when `chart.refresh()`
-or `chart.updateConfig( config )` is called.
-The best practice is to reuse existing DOM nodes and slightly animate their transition.
+  or `chart.updateConfig( config )` is called.
+  The best practice is to reuse existing DOM nodes and slightly animate their transition.
 
 ```
   .=========================================================.
@@ -273,14 +273,16 @@ The best practice is to reuse existing DOM nodes and slightly animate their tran
 ```
 
 ### Publishing the library
+
 - Assign a version number using Semantic Versioning rules.
-If API or some features are not stable, use `-beta.0` prefix.
+  If API or some features are not stable, use `-beta.0` prefix.
 - Run `npm test`, ensure that all tests have passed successfully.
 - Run `npm run build`.
 - Publish a beta version by executing `npm publish --tag beta`.
 - Publish a stable version by executing `npm publish`.
 
 ### Misc
+
 - Use Squash Commits when merging a Pull Request
-to keep the repository history clean
-for being able to highlight the release notes.
+  to keep the repository history clean
+  for being able to highlight the release notes.

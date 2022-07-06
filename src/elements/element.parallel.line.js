@@ -1,128 +1,94 @@
-import {CSS_PREFIX} from '../const';
-import {Element} from './element';
-import * as utils from '../utils/utils';
-import * as d3 from 'd3-shape';
+import { CSS_PREFIX } from "../const";
+import { Element } from "./element";
+import * as utils from "../utils/utils";
+import * as d3 from "d3-shape";
 
 export class ParallelLine extends Element {
+  constructor(config) {
+    super(config);
 
-    constructor(config) {
+    this.config = config;
+    this.config.guide = utils.defaults(this.config.guide || {}, {
+      // params here
+    });
 
-        super(config);
+    this.on("highlight", (sender, e) => this.highlight(e));
+  }
 
-        this.config = config;
-        this.config.guide = utils.defaults(
-            this.config.guide || {},
-            {
-                // params here
-            });
+  defineGrammarModel(fnCreateScale) {
+    var config = this.config;
+    var options = config.options;
 
-        this.on('highlight', (sender, e) => this.highlight(e));
-    }
+    this.color = fnCreateScale("color", config.color, {});
+    this.scalesMap = config.columns.reduce((memo, xi) => {
+      memo[xi] = fnCreateScale("pos", xi, [0, options.height]);
+      return memo;
+    }, {});
 
-    defineGrammarModel(fnCreateScale) {
+    var step = options.width / (config.columns.length - 1);
+    var colsMap = config.columns.reduce((memo, p, i) => {
+      memo[p] = i * step;
+      return memo;
+    }, {});
 
-        var config = this.config;
-        var options = config.options;
+    this.xBase = (p) => colsMap[p];
 
-        this.color = fnCreateScale('color', config.color, {});
-        this.scalesMap = config.columns.reduce(
-            (memo, xi) => {
-                memo[xi] = fnCreateScale('pos', xi, [0, options.height]);
-                return memo;
-            },
-            {});
+    this.regScale("columns", this.scalesMap).regScale("color", this.color);
 
-        var step = options.width / (config.columns.length - 1);
-        var colsMap = config.columns.reduce(
-            (memo, p, i) => {
-                memo[p] = (i * step);
-                return memo;
-            },
-            {});
+    return {};
+  }
 
-        this.xBase = ((p) => colsMap[p]);
+  drawFrames(frames) {
+    var node = this.config;
+    var options = this.config.options;
 
-        this.regScale('columns', this.scalesMap)
-            .regScale('color', this.color);
+    var scalesMap = this.scalesMap;
+    var xBase = this.xBase;
+    var color = this.color;
 
-        return {};
-    }
+    var d3Line = d3.line();
 
-    drawFrames(frames) {
+    var drawPath = function (selection) {
+      selection.attr("d", (row) => d3Line(node.columns.map((p) => [xBase(p), scalesMap[p](row[scalesMap[p].dim])])));
+    };
 
-        var node = this.config;
-        var options = this.config.options;
+    var markPath = function (sel) {
+      sel.attr("stroke", (row) => color.toColor(color(row[color.dim])));
+      sel.attr("class", (row) => `${CSS_PREFIX}__line line ${color.toClass(color(row[color.dim]))} foreground`);
+    };
 
-        var scalesMap = this.scalesMap;
-        var xBase = this.xBase;
-        var color = this.color;
+    var updateFrame = function (selection) {
+      var backgroundPath = selection.selectAll(".background").data((f) => f.part());
+      backgroundPath.exit().remove();
+      backgroundPath.call(drawPath);
+      backgroundPath.enter().append("path").attr("class", "background line").call(drawPath);
 
-        var d3Line = d3.line();
+      var foregroundPath = selection.selectAll(".foreground").data((f) => f.part());
+      foregroundPath.exit().remove();
+      foregroundPath.call(function (selection) {
+        drawPath(selection);
+        markPath(selection);
+      });
+      foregroundPath
+        .enter()
+        .append("path")
+        .call(function (selection) {
+          drawPath(selection);
+          markPath(selection);
+        });
+    };
 
-        var drawPath = function (selection) {
-            selection.attr('d',
-                (row) => d3Line(node.columns.map((p) => [xBase(p), scalesMap[p](row[scalesMap[p].dim])])));
-        };
+    var part = options.container.selectAll(".lines-frame").data(frames, (f) => f.hash());
+    part.exit().remove();
+    part.call(updateFrame);
+    part.enter().append("g").attr("class", "lines-frame").call(updateFrame);
 
-        var markPath = function (sel) {
-            sel.attr('stroke', (row) => color.toColor(color(row[color.dim])));
-            sel.attr('class', (row) => `${CSS_PREFIX}__line line ${color.toClass(color(row[color.dim]))} foreground`);
-        };
+    this.subscribe(options.container.selectAll(".lines-frame .foreground"));
+  }
 
-        var updateFrame = function (selection) {
-            var backgroundPath = selection
-                .selectAll('.background')
-                .data(f => f.part());
-            backgroundPath
-                .exit()
-                .remove();
-            backgroundPath
-                .call(drawPath);
-            backgroundPath
-                .enter()
-                .append('path')
-                .attr('class', 'background line')
-                .call(drawPath);
-
-            var foregroundPath = selection
-                .selectAll('.foreground')
-                .data(f => f.part());
-            foregroundPath
-                .exit()
-                .remove();
-            foregroundPath
-                .call(function (selection) {
-                    drawPath(selection);
-                    markPath(selection);
-                });
-            foregroundPath
-                .enter()
-                .append('path')
-                .call(function (selection) {
-                    drawPath(selection);
-                    markPath(selection);
-                });
-        };
-
-        var part = options.container
-            .selectAll('.lines-frame')
-            .data(frames, (f => f.hash()));
-        part.exit()
-            .remove();
-        part.call(updateFrame);
-        part.enter()
-            .append('g')
-            .attr('class', 'lines-frame')
-            .call(updateFrame);
-
-        this.subscribe(options.container.selectAll('.lines-frame .foreground'));
-    }
-
-    highlight(filter) {
-        this.config
-            .options
-            .container
-            .selectAll('.lines-frame .foreground')
-            .style('visibility', (d) => (filter(d) ? '' : 'hidden'));
-    }
+  highlight(filter) {
+    this.config.options.container
+      .selectAll(".lines-frame .foreground")
+      .style("visibility", (d) => (filter(d) ? "" : "hidden"));
+  }
 }
