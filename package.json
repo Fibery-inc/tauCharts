@@ -1,7 +1,7 @@
 {
   "name": "@fibery/taucharts",
   "private": false,
-  "version": "3.0.1",
+  "version": "3.0.2",
   "homepage": "https://github.com/fibery-inc/taucharts",
   "description": "Data-focused charting library based on D3",
   "author": {
