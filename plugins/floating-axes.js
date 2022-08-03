@@ -7,8 +7,8 @@ const domUtils = Taucharts.api.domUtils;
 var utils = Taucharts.api.utils;
 
 var SHADOW_SIZE = 16;
-var SHADOW_COLOR_0 = "#E5E7EB";
-var SHADOW_COLOR_1 = "#FFFFFF";
+var SHADOW_COLOR_0 = "var(--tauchart-float-axis-shadow-color-0)";
+var SHADOW_COLOR_1 = "var(--tauchart-float-axis-shadow-color-1)";
 var SHADOW_OPACITY_0 = 1;
 var SHADOW_OPACITY_1 = 0;
 
@@ -23,8 +23,8 @@ var getId = function () {
 
 function floatingAxes(_settings) {
   var settings = utils.defaults(_settings || {}, {
-    detectBackground: true,
-    bgcolor: "#fff",
+    detectBackground: false,
+    bgcolor: "var(--tauchart-bg-color)",
   });
 
   return {
@@ -60,7 +60,6 @@ function floatingAxes(_settings) {
           settings.bgcolor = bg;
         }
       }
-      SHADOW_COLOR_1 = settings.bgcolor;
 
       var applicable = true;
       this.chart.traverseSpec(this.chart.getSpec(), function (unit) {

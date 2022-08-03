@@ -62,7 +62,7 @@ export class LayerLabels {
       fontFamily: "Helvetica Neue, Segoe UI, Open Sans, Ubuntu, sans-serif",
       fontWeight: "normal",
       fontSize: 10,
-      fontColor: "#000",
+      fontColor: "var(--tauchart-font-color)",
       hideEqualLabels: false,
       lineBreak: false,
       lineBreakSeparator: "",

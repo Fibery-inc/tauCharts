@@ -1,4 +1,6 @@
 @light-bg-color: #fff;
+@light-tooltip-bg-color: #fff;
+@light-tooltip-shadow: 0 0 0 1px rgba(110,122,131,0.1),0 12px 16px -4px rgba(110,122,131,0.3);
 @light-font-color: #333;
 @light-tooltip_btn-bg-color: #ebeef1;
 @light-shadow-color: #000;
@@ -29,8 +31,13 @@
 @light-tooltip_btn-bg-color: #ebeef1;
 @light-tooltip_btn-font-color: #65717f;
 
-@dark-bg-color: #000;
-@dark-font-color: #fff;
+@light-float-axis-shadow-color-0: #E5E7EB;
+@light-float-axis-shadow-color-1: @light-bg-color;
+
+@dark-bg-color: hsl(195, 7.1%, 11.0%);
+@dark-tooltip-bg-color: hsl(198, 6.6%, 15.8%);
+@dark-tooltip-shadow: 0 0 0 1px rgba(21,23,24,0.1),0 12px 16px -4px rgba(21,23,24,0.4);
+@dark-font-color: hsl(208, 11.3%, 88.9%);
 @dark-tooltip_btn-bg-color: #ebeef1;
 @dark-shadow-color: #fff;
 @dark-axis-color: rgba(255, 255, 255, 0.2);
@@ -60,6 +67,9 @@
 @dark-tooltip_btn-bg-color: #262a2e;
 @dark-tooltip_btn-font-color: #65717f;
 
+@dark-float-axis-shadow-color-0: hsl(203, 6.0%, 24.3%);
+@dark-float-axis-shadow-color-1: @dark-bg-color;
+
 .generate-theme(
   @base-bg-color,
   @base-font-color,
@@ -87,13 +97,18 @@
   @base-legend-items-bg-hover,
   @base-export-items-bg-hover,
   @base-tooltip_btn-bg-color,
-  @base-tooltip_btn-font-color
+  @base-tooltip_btn-font-color,
+  @base-float-axis-shadow-color-0,
+  @base-float-axis-shadow-color-1,
+  @base-tooltip-bg-color,
+  @base-tooltip-shadow
 ) {
   --tauchart-font-color: @base-font-color;
   --tauchart-bg-color: @base-bg-color;
+  --tauchart--tooltip-bg-color: @base-bg-color;
   --tauchart-axis-color: @base-axis-color;
   --tauchart-parallel-background-line-color: @base-parallel-background-line-color;
-  --tauchart-tooltip-bg-color: fade(@base-bg-color, 90%);
+  --tauchart-tooltip-bg-color: @base-tooltip-bg-color;
   --tauchart-tooltip-bg-color-button: mix(@base-bg-color, @base-tooltip_btn-bg-color, 50%);
   --tauchart-tooltip-bg-color-button-after: fade(@base-bg-color, 0%);
   --tauchart-crosshair-line-shadow: mix(@base-font-color, @base-bg-color, 25%);
@@ -107,7 +122,7 @@
   --tauchart-border-forms-color: @base-border-forms-color;
   --tauchart-border-forms-hover-color: @base-border-forms-hover-color;
   --tauchart-border-forms-focus-color: @base-border-forms-focus-color;
-  --tauchart-tooltip_shadow: 0 1px 4px 0 fade(@base-shadow-color, 20%), 0 0 0 1px fade(@base-shadow-color, 0.5%);
+  --tauchart-tooltip_shadow: @base-tooltip-shadow;
   --tauchart-box-shadow-input: 0 0 0 1px fade(@base-shadow-color, 30%),
     0 0 7px 0 var(--tauchart-border-forms-focus-color);
   --tauchart-progress-value-background: fadeout(@base-font-color, 75%);
@@ -134,6 +149,8 @@
   --tauchart-tooltip_btn-bg-color: @base-tooltip_btn-bg-color;
   --tauchart-tooltip_btn-font-color: @base-tooltip_btn-font-color;
   --tauchart-category-legend-items-bg-hover: fade(@base-legend-items-bg-hover, 20%);
+  --tauchart-float-axis-shadow-color-0: @base-float-axis-shadow-color-0;
+  --tauchart-float-axis-shadow-color-1: @base-float-axis-shadow-color-1;
 }
 
 @layout-bg-color: transparent;
