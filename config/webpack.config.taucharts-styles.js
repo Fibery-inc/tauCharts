@@ -17,8 +17,10 @@ const stylesLoader = (lessVariables) => [
     loader: `less-loader`,
     options: {
       sourceMap: false,
-      paths: [resolvePath(`../less`)],
-      modifyVars: lessVariables,
+      lessOptions: {
+        paths: [resolvePath(`../less`)],
+        modifyVars: lessVariables,
+      },
     },
   },
 ];
@@ -64,7 +66,6 @@ const tauchartsStyles = themes.map((theme) => ({
     [`taucharts${theme ? `.${theme}` : ""}`]: [resolvePath(`../less/taucharts.less`)],
     [`taucharts${theme ? `.${theme}` : ""}.min`]: [resolvePath(`../full/taucharts.full.less`)],
   },
-  devtool: "none",
   mode: `development`,
   module: webpackModules(theme),
   plugins,
@@ -78,7 +79,6 @@ const tauchartsBrewerStyles = {
   entry: {
     colorbrewer: [resolvePath(`../less/colorbrewer.less`)],
   },
-  devtool: "none",
   mode: `development`,
   module: webpackModules(""),
   plugins,
@@ -90,7 +90,6 @@ const tauchartsPluginsStyles = themes.map((theme) => ({
     path: resolvePath("../dist/plugins/"),
   },
   entry: getEntries(theme),
-  devtool: "none",
   mode: `development`,
   module: webpackModules(theme),
   plugins,

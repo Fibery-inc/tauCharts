@@ -7,12 +7,22 @@ const WATCHER_SERVER_LISTENING_PORT = process.env.WEBPACK_PORT || 8080;
 const compiler = webpack(conf);
 
 const server = new WebpackDevServer(compiler, {
+  static: [
+    {
+      directory: path.resolve("./examples/"),
+      publicPath: [`/examples/`],
+      serveIndex: true,
+    },
+    {
+      directory: path.resolve("./"),
+      publicPath: [`/`],
+    },
+  ],
   quiet: true,
   noInfo: true,
   open: true,
   hot: true,
   historyApiFallback: false,
-  contentBase: path.resolve("./examples/"),
   watchOptions: {
     aggregateTimeout: 300,
     poll: false,
@@ -21,7 +31,6 @@ const server = new WebpackDevServer(compiler, {
   headers: {
     "Access-Control-Allow-Origin": `*`,
   },
-  publicPath: `/dist/`,
   stats: `errors-only`,
 });
 server.listen(WATCHER_SERVER_LISTENING_PORT);

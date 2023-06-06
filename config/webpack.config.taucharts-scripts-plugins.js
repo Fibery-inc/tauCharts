@@ -31,7 +31,6 @@ module.exports = {
       root: "Taucharts",
     },
   },
-  devtool: "none",
   mode: "development",
   module: webpackModule,
   stats: {

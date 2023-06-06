@@ -2,13 +2,24 @@ const plugins = require("./scripts-plugins");
 const { resolvePath, resolve } = require("./resolve");
 const externals = require("./externals");
 const webpackModule = require("./scripts-module");
+const path = require("path");
 module.exports = {
   devServer: {
-    publicPath: "/dist/",
-    openPage: "examples/",
-    open: true,
+    static: [
+      {
+        directory: path.resolve("./examples/"),
+        publicPath: [`/examples/`],
+        serveIndex: true,
+      },
+      {
+        directory: path.resolve("./"),
+        publicPath: [`/`],
+      },
+    ],
+    open: ["examples/"],
   },
   output: {
+    publicPath: "/dist/",
     filename: "[name].js",
     path: resolvePath("../dist/"),
     library: "Taucharts",
@@ -20,7 +31,6 @@ module.exports = {
   },
   resolve,
   externals,
-  devtool: "none",
   mode: `development`,
   module: webpackModule,
   stats: {
